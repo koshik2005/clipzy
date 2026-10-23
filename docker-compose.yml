@@ -1,0 +1,33 @@
+# Local development: Postgres + API (uploads stored on disk).
+#   docker compose up --build
+# Then point the mobile app at http://<your-computer-LAN-IP>:4000
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: clipzy
+      POSTGRES_PASSWORD: clipzy
+      POSTGRES_DB: clipzy
+    ports: ["5432:5432"]
+    volumes: [dbdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U clipzy"]
+      interval: 5s
+      retries: 10
+  api:
+    build: ./backend
+    depends_on:
+      db: { condition: service_healthy }
+    ports: ["4000:4000"]
+    environment:
+      NODE_ENV: development
+      PORT: 4000
+      PUBLIC_BASE_URL: http://localhost:4000
+      DATABASE_URL: postgres://clipzy:clipzy@db:5432/clipzy
+      JWT_SECRET: dev-only-secret-change-me-dev-only-secret
+      STORAGE_DRIVER: local
+      ADMIN_API_KEY: dev-admin-key
+    volumes: [uploads:/app/uploads]
+volumes:
+  dbdata:
+  uploads:

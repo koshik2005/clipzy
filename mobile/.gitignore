@@ -1,0 +1,9 @@
+node_modules
+.expo
+dist
+.env
+google-play-service-account.json
+*.jks
+*.p8
+*.p12
+*.mobileprovision

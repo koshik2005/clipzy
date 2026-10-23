@@ -1,0 +1,35 @@
+{
+  "cli": { "version": ">= 16.0.0", "appVersionSource": "remote" },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": { "EXPO_PUBLIC_API_URL": "http://YOUR-LAN-IP:4000" }
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": { "EXPO_PUBLIC_API_URL": "https://api.yourdomain.com" }
+    },
+    "production": {
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://api.yourdomain.com",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "",
+        "EXPO_PUBLIC_MAX_VIDEO_SECONDS": "180"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "you@example.com",
+        "ascAppId": "APP_STORE_CONNECT_APP_ID",
+        "appleTeamId": "APPLE_TEAM_ID"
+      },
+      "android": {
+        "serviceAccountKeyPath": "./google-play-service-account.json",
+        "track": "internal"
+      }
+    }
+  }
+}

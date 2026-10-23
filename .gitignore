@@ -1,0 +1,22 @@
+# Environment secrets (keep example templates)
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Dependencies and generated data
+node_modules/
+**/node_modules/
+uploads/
+**/uploads/
+mobile/.expo/
+mobile/dist/
+
+# Signing credentials
+google-play-service-account.json
+*.jks
+*.p8
+*.p12
+*.mobileprovision

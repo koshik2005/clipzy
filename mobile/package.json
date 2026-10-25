@@ -4,6 +4,7 @@
   "main": "expo-router/entry",
   "dependencies": {
     "@expo/vector-icons": "^15.1.1",
+    "@react-native-google-signin/google-signin": "^16.1.5",
     "expo": "~58.0.19",
     "expo-auth-session": "~58.0.14",
     "expo-constants": "^58.0.12",

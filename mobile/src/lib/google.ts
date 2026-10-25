@@ -9,7 +9,15 @@ import { GOOGLE_WEB_CLIENT_ID } from './config';
  */
 export const googleAvailable = Platform.OS === 'android' && !!GOOGLE_WEB_CLIENT_ID;
 
-export async function getGoogleIdToken(): Promise<string | null> {
+export type GoogleProfile = {
+  idToken: string;
+  email: string;
+  name: string;
+  username: string;
+  photo: string | null;
+};
+
+export async function getGoogleProfile(): Promise<GoogleProfile | null> {
   let mod: any;
   try {
     mod = require('@react-native-google-signin/google-signin');
@@ -18,8 +26,17 @@ export async function getGoogleIdToken(): Promise<string | null> {
   }
   const { GoogleSignin } = mod;
   GoogleSignin.configure({ webClientId: GOOGLE_WEB_CLIENT_ID });
-  await GoogleSignin.hasPlayServices();
+  await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
   const res = await GoogleSignin.signIn();
   if (res?.type === 'cancelled') return null;
-  return res?.data?.idToken ?? res?.idToken ?? null;
+  const user = res?.data?.user ?? res?.user;
+  const idToken = res?.data?.idToken ?? res?.idToken ?? null;
+  if (!user?.email || !idToken) return null;
+  const name = user.name || `${user.givenName || ''} ${user.familyName || ''}`.trim() || user.email.split('@')[0];
+  const username = user.email.split('@')[0].replace(/[^a-zA-Z0-9_.]/g, '').slice(0, 18) || 'user';
+  return { idToken, email: user.email, name, username, photo: user.photo ?? null };
+}
+
+export async function getGoogleIdToken(): Promise<string | null> {
+  return (await getGoogleProfile())?.idToken ?? null;
 }

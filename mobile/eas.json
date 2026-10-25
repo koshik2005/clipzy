@@ -11,7 +11,7 @@
       "android": { "buildType": "apk" },
       "env": {
         "EXPO_PUBLIC_API_URL": "https://clipzy-api.onrender.com",
-        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "930359673034-pcm4k982f5plogaecnp27mt3vvufuoa8.apps.googleusercontent.com"
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "930359673034-0lv035ebpkulmv09t7mo4h0sr6gv2hp6.apps.googleusercontent.com"
       }
     },
     "production": {
@@ -19,7 +19,7 @@
       "android": { "buildType": "apk" },
       "env": {
         "EXPO_PUBLIC_API_URL": "https://clipzy-api.onrender.com",
-        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "930359673034-pcm4k982f5plogaecnp27mt3vvufuoa8.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "930359673034-0lv035ebpkulmv09t7mo4h0sr6gv2hp6.apps.googleusercontent.com",
         "EXPO_PUBLIC_MAX_VIDEO_SECONDS": "180"
       }
     }

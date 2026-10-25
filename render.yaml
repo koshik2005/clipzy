@@ -46,7 +46,7 @@ services:
       - key: CORS_ORIGINS
         value: "*"
       - key: GOOGLE_CLIENT_IDS
-        sync: false
+        value: 930359673034-0lv035ebpkulmv09t7mo4h0sr6gv2hp6.apps.googleusercontent.com
       - key: APP_NAME
         value: Clipzy
       - key: COMPANY_NAME

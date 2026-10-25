@@ -25,6 +25,10 @@ export function createApp() {
   app.use(rateLimit({ windowMs: 15 * 60_000, limit: 600, standardHeaders: true, legacyHeaders: false }));
   const authLimiter = rateLimit({ windowMs: 15 * 60_000, limit: 30, standardHeaders: true, legacyHeaders: false });
 
+  app.get('/', (_req, res) => {
+    res.json({ service: 'Clipzy API', health: '/health' });
+  });
+
   app.get('/health', async (_req, res) => {
     try {
       await pool.query('SELECT 1');

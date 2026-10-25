@@ -8,13 +8,14 @@
     },
     "preview": {
       "distribution": "internal",
-      "env": { "EXPO_PUBLIC_API_URL": "https://api.yourdomain.com" }
+      "android": { "buildType": "apk" },
+      "env": { "EXPO_PUBLIC_API_URL": "https://clipzy-api.onrender.com" }
     },
     "production": {
       "autoIncrement": true,
+      "android": { "buildType": "apk" },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://api.yourdomain.com",
-        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "",
+        "EXPO_PUBLIC_API_URL": "https://clipzy-api.onrender.com",
         "EXPO_PUBLIC_MAX_VIDEO_SECONDS": "180"
       }
     }

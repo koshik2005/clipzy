@@ -13,6 +13,7 @@ uploads/
 **/uploads/
 mobile/.expo/
 mobile/dist/
+*.apk
 
 # Signing credentials
 google-play-service-account.json

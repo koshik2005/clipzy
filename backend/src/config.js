@@ -9,7 +9,10 @@ const bool = z
 const schema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   PORT: z.coerce.number().default(4000),
-  PUBLIC_BASE_URL: z.string().url().default('http://localhost:4000'),
+  PUBLIC_BASE_URL: z.preprocess(
+    (value) => (typeof value === 'string' && value.trim() ? value.trim() : undefined),
+    z.string().url().optional(),
+  ),
 
   DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
   DATABASE_SSL: bool,
@@ -52,6 +55,12 @@ if (!parsed.success) {
 }
 
 const env = parsed.data;
+const publicBaseUrl =
+  env.PUBLIC_BASE_URL ||
+  (env.NODE_ENV === 'production' ? process.env.RENDER_EXTERNAL_URL : undefined) ||
+  'http://localhost:4000';
+
+env.PUBLIC_BASE_URL = publicBaseUrl;
 
 if (env.STORAGE_DRIVER === 's3') {
   const missing = ['S3_BUCKET', 'S3_ACCESS_KEY_ID', 'S3_SECRET_ACCESS_KEY', 'MEDIA_BASE_URL'].filter((k) => !env[k]);
@@ -66,7 +75,7 @@ if (env.NODE_ENV === 'production') {
   if (!env.ADMIN_API_KEY || env.ADMIN_API_KEY.length < 32) {
     productionIssues.push('ADMIN_API_KEY must be at least 32 characters');
   }
-  if (new URL(env.PUBLIC_BASE_URL).protocol !== 'https:') productionIssues.push('PUBLIC_BASE_URL must use HTTPS');
+  if (new URL(publicBaseUrl).protocol !== 'https:') productionIssues.push('PUBLIC_BASE_URL or RENDER_EXTERNAL_URL must use HTTPS');
   if (productionIssues.length) {
     console.error(`Invalid production configuration:\n${productionIssues.map((issue) => `  - ${issue}`).join('\n')}`);
     process.exit(1);
@@ -75,6 +84,7 @@ if (env.NODE_ENV === 'production') {
 
 export const config = {
   ...env,
+  PUBLIC_BASE_URL: publicBaseUrl,
   googleClientIds: env.GOOGLE_CLIENT_IDS.split(',').map((s) => s.trim()).filter(Boolean),
   corsOrigins: env.CORS_ORIGINS === '*' ? '*' : env.CORS_ORIGINS.split(',').map((s) => s.trim()),
   maxUploadBytes: env.MAX_UPLOAD_MB * 1024 * 1024,

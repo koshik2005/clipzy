@@ -1,0 +1,69 @@
+services:
+  - type: web
+    name: clipzy-api
+    runtime: docker
+    repo: https://github.com/koshik2005/clipzy
+    branch: main
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    region: oregon
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: PUBLIC_BASE_URL
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: clipzy-db
+          property: connectionString
+      - key: DATABASE_SSL
+        value: true
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_API_KEY
+        generateValue: true
+      - key: STORAGE_DRIVER
+        value: s3
+      - key: S3_BUCKET
+        value: clipzy
+      - key: S3_REGION
+        value: auto
+      - key: S3_ENDPOINT
+        sync: false
+      - key: S3_ACCESS_KEY_ID
+        sync: false
+      - key: S3_SECRET_ACCESS_KEY
+        sync: false
+      - key: S3_FORCE_PATH_STYLE
+        value: false
+      - key: MEDIA_BASE_URL
+        sync: false
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: GOOGLE_CLIENT_IDS
+        sync: false
+      - key: APP_NAME
+        value: Clipzy
+      - key: COMPANY_NAME
+        sync: false
+      - key: SUPPORT_EMAIL
+        value: clipzyoffi@gmail.com
+      - key: MAX_UPLOAD_MB
+        value: 100
+      - key: MAX_VIDEO_SECONDS
+        value: 180
+      - key: ACCESS_TOKEN_TTL
+        value: 30m
+      - key: REFRESH_TOKEN_DAYS
+        value: 30
+
+databases:
+  - name: clipzy-db
+    databaseName: clipzy
+    plan: free
+    region: oregon

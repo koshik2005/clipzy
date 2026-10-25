@@ -29,7 +29,22 @@ test('production rejects local storage, a weak admin key, and HTTP URLs', () => 
   assert.equal(result.status, 1);
   assert.match(result.stderr, /STORAGE_DRIVER must be s3/);
   assert.match(result.stderr, /ADMIN_API_KEY must be at least 32 characters/);
-  assert.match(result.stderr, /PUBLIC_BASE_URL must use HTTPS/);
+  assert.match(result.stderr, /PUBLIC_BASE_URL or RENDER_EXTERNAL_URL must use HTTPS/);
+});
+
+test('production accepts Render external URL without PUBLIC_BASE_URL', () => {
+  const result = loadConfig({
+    PUBLIC_BASE_URL: '',
+    RENDER_EXTERNAL_URL: 'https://clipzy-api.onrender.com',
+    STORAGE_DRIVER: 's3',
+    ADMIN_API_KEY: 'a-long-enough-admin-key-with-32-plus-characters',
+    S3_BUCKET: 'clipzy',
+    S3_ACCESS_KEY_ID: 'access',
+    S3_SECRET_ACCESS_KEY: 'secret',
+    MEDIA_BASE_URL: 'https://media.example.com',
+  });
+
+  assert.equal(result.status, 0, result.stderr);
 });
 
 test('production accepts HTTPS, S3, and an admin key', () => {
